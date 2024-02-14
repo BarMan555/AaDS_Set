@@ -10,15 +10,36 @@ Node::Node(int key) : Node()
 	this->key = key;
 }
 
-Set::Set()
+Set::Set() : _root(nullptr) {}
+
+Node* Set::get_root() const
 {
-	root = nullptr;
+	return this->_root;
 }
 
-//Set::Set(const Set& other)
-//{
-//	root = new Node(other.root->key);
-//}
+Node* Set::copy_tree(Node* root) {
+	insert(root->key);
+	if (root->left)
+		copy_tree(root->left);
+	if (root->right)
+		copy_tree(root->right);
+	return this->_root;
+}
+
+Set::Set(const Set& other) : Set()
+{
+	_root = copy_tree(other.get_root());
+}
+
+Set& Set::operator=(const Set& other)
+{
+	if(this != &other)
+	{
+		clear(_root);
+		_root = copy_tree(other.get_root());
+	}
+	return *this;
+}
 
 void Set::clear(Node* root)
 {
@@ -30,8 +51,8 @@ void Set::clear(Node* root)
 
 Set::~Set()
 {
-	clear(root);
-	root = nullptr;
+	clear(_root);
+	_root = nullptr;
 }
 
 void Set::print_tree(const Node* root)
@@ -44,19 +65,19 @@ void Set::print_tree(const Node* root)
 
 void Set::print()
 {
-	if (!root) return;
-	print_tree(root);
+	if (!_root) return;
+	print_tree(_root);
 }
 
 bool Set::insert(int key)
 {
-	if (!root)
+	if (!_root)
 	{
-		root = new Node(key);
+		_root = new Node(key);
 		return true;
 	}
 
-	Node* tmp = root;
+	Node* tmp = _root;
 	while (tmp && tmp->key != key)
 	{
 		if (key < tmp->key)
@@ -84,8 +105,8 @@ bool Set::insert(int key)
 
 bool Set::contains(int key)
 {
-	if (!root) return false;
-	Node* tmp = root;
+	if (!_root) return false;
+	Node* tmp = _root;
 	while (tmp)
 	{
 		if (tmp->key == key) return true;
@@ -100,4 +121,57 @@ bool Set::contains(int key)
 	}
 
 	return false;
+}
+
+bool Set::erase(int key)
+{
+	Node* tmp = _root;
+	Node* parent = nullptr;
+	while (tmp && tmp->key != key)
+	{
+		parent = tmp;
+		if (tmp->key > key)
+		{
+			tmp = tmp->left;
+		}
+		else
+		{
+			tmp = tmp->right;
+		}
+	}
+
+	// не нашли ключ
+	if (!tmp)
+		return false;
+
+	// заменяем правым
+	if (tmp->left == nullptr)
+	{
+		if (parent && parent->left == tmp)
+			parent->left = tmp->right;
+		if (parent && parent->right == tmp)
+			parent->right = tmp->right;
+		delete tmp;
+		return true;
+	}
+	
+	// заменяем левым
+	if (tmp->right == nullptr)
+	{
+		if (parent && parent->left == tmp)
+			parent->left = tmp->left;
+		if (parent && parent->right == tmp)
+			parent->right = tmp->left;
+		delete tmp;
+		return true;
+	}
+
+	// 2 потомка
+	Node* replace = tmp->right;
+	while (replace->left)
+		replace = replace->left;
+	int replace_value = replace->key;
+	erase(replace_value);
+	tmp->key = replace_value;
+	return true;
 }
