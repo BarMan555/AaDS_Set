@@ -1,30 +1,30 @@
 #pragma once
-
-#include <iostream>
 	
-namespace Set {
+namespace SetSpace
+{
 
-	struct Node {
+	struct Node 
+	{
 		int key;
 		Node* left;
 		Node* right;
 
-	public:
 		Node();
-		Node(const int key);
+		Node(int key);
 	};
 
-	class Set {
+	class Set 
+	{
 		Node* root;
-		Node* find(const int key);
-
+		void print_tree(const Node* root); 
+		void clear(Node* root);
 	public:
-		Set() = default;
+		Set(); 
 		Set(const Set& other);
 		~Set();
 
-		void print();
-		bool insert(int key);
+		void print(); 
+		bool insert(int key); 
 		bool contains(int key);
 		bool erase(int key);
 
