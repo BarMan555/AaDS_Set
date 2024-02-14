@@ -18,7 +18,7 @@ if(MSVC)
 endif()
 
 # ќбъ€вл€ем библиотеки
-add_library(set_lib SHARED "include/set.cpp")
+add_library(set_lib SHARED "include/set.h" "src/set.cpp")
 target_include_directories(set_lib PUBLIC "include")
 
 # ќбъ€вл€ем консольное приложение
