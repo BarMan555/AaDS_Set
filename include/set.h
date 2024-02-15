@@ -16,6 +16,7 @@ namespace SetSpace
 	class Set 
 	{
 		Node* _root;
+		int _size;
 		Node* copy_tree(Node* root);
 		void print_tree(const Node* root); 
 		void clear(Node* root);
@@ -30,6 +31,7 @@ namespace SetSpace
 		bool contains(int key);
 		bool erase(int key);
 		Node* get_root() const;
+		int get_size() const;
 
 		Set& operator=(const Set& set);
 	};
