@@ -9,7 +9,7 @@ Node::Node(int key) : Node()
 	this->key = key;
 }
 
-Set::Set() : _root(nullptr) {}
+Set::Set() : _root(nullptr), _size(0) {}
 
 Node* Set::get_root() const
 {
@@ -28,6 +28,7 @@ Node* Set::copy_tree(Node* root) {
 Set::Set(const Set& other) : Set()
 {
 	_root = copy_tree(other.get_root());
+	_size = other.get_size();
 }
 
 Set& Set::operator=(const Set& other)
@@ -36,6 +37,7 @@ Set& Set::operator=(const Set& other)
 	{
 		clear(_root);
 		_root = copy_tree(other.get_root());
+		_size = other.get_size();
 	}
 	return *this;
 }
@@ -52,6 +54,7 @@ Set::~Set()
 {
 	clear(_root);
 	_root = nullptr;
+	_size = 0;
 }
 
 void Set::print_tree(const Node* root)
@@ -73,6 +76,7 @@ bool Set::insert(int key)
 	if (!_root)
 	{
 		_root = new Node(key);
+		++_size;
 		return true;
 	}
 
@@ -85,6 +89,7 @@ bool Set::insert(int key)
 			else
 			{
 				tmp->left = new Node(key);
+				++_size;
 				return true;
 			}
 		}
@@ -94,6 +99,7 @@ bool Set::insert(int key)
 			else
 			{
 				tmp->right = new Node(key);
+				++_size;
 				return true;
 			}
 		}
@@ -151,6 +157,7 @@ bool Set::erase(int key)
 		if (parent && parent->right == tmp)
 			parent->right = tmp->right;
 		delete tmp;
+		--_size;
 		return true;
 	}
 	
@@ -162,6 +169,7 @@ bool Set::erase(int key)
 		if (parent && parent->right == tmp)
 			parent->right = tmp->left;
 		delete tmp;
+		--_size;
 		return true;
 	}
 
@@ -172,5 +180,11 @@ bool Set::erase(int key)
 	int replace_value = replace->key;
 	erase(replace_value);
 	tmp->key = replace_value;
+	--_size;
 	return true;
+}
+
+int Set::get_size() const
+{
+	return _size;
 }
