@@ -1,10 +1,9 @@
-#include "set.h"
 #include <iostream>
+#include "set.h"
 
 using namespace SetSpace;
 
 Node::Node() : key(0), left(nullptr), right(nullptr){}
-
 Node::Node(int key) : Node()
 {
 	this->key = key;
