@@ -15,22 +15,22 @@ int main() {
 	using namespace SetSpace;
 	using namespace std;
 
-	Set set1000;
+	/*Set set1000;
 	int count = 100000;
 	
 	chrono::steady_clock::time_point _begin, _end;
-	double sum = 0;
+	double sum = 0;*/
 
-	//for (int i = 0; i < 100; ++i)
-	//{
-		//begin = chrono::steady_clock::now();
+	/*for (int i = 0; i < 100; ++i)
+	{
+		begin = chrono::steady_clock::now();
 		for (int j = 0; j < count; ++j)
 		{
 			set1000.insert(lcg());
 		}
-		//end = chrono::steady_clock::now();
-		//sum += static_cast<double>(chrono::duration_cast<std::chrono::milliseconds>(end - begin).count());
-	//}
+		end = chrono::steady_clock::now();
+		sum += static_cast<double>(chrono::duration_cast<std::chrono::milliseconds>(end - begin).count());
+	}*/
 
 	//for (int i = 0; i < 1000; ++i)
 	//{
@@ -41,18 +41,18 @@ int main() {
 	//	sum += chrono::duration_cast<std::chrono::milliseconds>(_end - _begin).count();
 	//}
 
-	for (int i = 0; i < 1000; ++i)
-	{
-		_begin = chrono::steady_clock::now();
-		/*	set1000.push_back(lcg());
-			set1000.erase(remove(set1000.begin(), set1000.end(), lcg()), set1000.end());*/
-		set1000.insert(lcg());
-		set1000.erase(lcg());
-		_end = chrono::steady_clock::now();
-		sum += chrono::duration_cast<std::chrono::milliseconds>(_end - _begin).count();
-	}
-		
-	std::cout << "The time: " << sum / 1000 << " ms\n";
+	//for (int i = 0; i < 1000; ++i)
+	//{
+	//	_begin = chrono::steady_clock::now();
+	//	/*	set1000.push_back(lcg());
+	//		set1000.erase(remove(set1000.begin(), set1000.end(), lcg()), set1000.end());*/
+	//	set1000.insert(lcg());
+	//	set1000.erase(lcg());
+	//	_end = chrono::steady_clock::now();
+	//	sum += chrono::duration_cast<std::chrono::milliseconds>(_end - _begin).count();
+	//}
+	//	
+	//std::cout << "The time: " << sum / 1000 << " ms\n";
 
 	return 0;
 }
