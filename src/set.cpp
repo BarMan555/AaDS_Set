@@ -1,4 +1,6 @@
 #include <iostream>
+#include <exception>
+#include <vector>
 #include "set.h"
 
 using namespace SetSpace;
@@ -9,7 +11,7 @@ Node::Node(int key) : Node()
 	this->key = key;
 }
 
-Set::Set() : _root(nullptr), _size(0) {}
+Set::Set() : _root(nullptr) {}
 
 Node* Set::get_root() const
 {
@@ -28,7 +30,6 @@ Node* Set::copy_tree(Node* root) {
 Set::Set(const Set& other) : Set()
 {
 	_root = copy_tree(other.get_root());
-	_size = other.get_size();
 }
 
 Set& Set::operator=(const Set& other)
@@ -37,7 +38,6 @@ Set& Set::operator=(const Set& other)
 	{
 		clear(_root);
 		_root = copy_tree(other.get_root());
-		_size = other.get_size();
 	}
 	return *this;
 }
@@ -54,21 +54,20 @@ Set::~Set()
 {
 	clear(_root);
 	_root = nullptr;
-	_size = 0;
 }
 
-void Set::print_tree(const Node* root)
+void Set::_print(const Node* root)
 {
 	if (!root) return;
 	std::cout << root->key << " ";
-	print_tree(root->left);
-	print_tree(root->right);
+	_print(root->left);
+	_print(root->right);
 }
 
 void Set::print()
 {
 	if (!_root) return;
-	print_tree(_root);
+	_print(_root);
 }
 
 bool Set::insert(int key)
@@ -76,7 +75,6 @@ bool Set::insert(int key)
 	if (!_root)
 	{
 		_root = new Node(key);
-		++_size;
 		return true;
 	}
 
@@ -89,7 +87,6 @@ bool Set::insert(int key)
 			else
 			{
 				tmp->left = new Node(key);
-				++_size;
 				return true;
 			}
 		}
@@ -99,7 +96,6 @@ bool Set::insert(int key)
 			else
 			{
 				tmp->right = new Node(key);
-				++_size;
 				return true;
 			}
 		}
@@ -157,7 +153,6 @@ bool Set::erase(int key)
 		if (parent && parent->right == tmp)
 			parent->right = tmp->right;
 		delete tmp;
-		--_size;
 		return true;
 	}
 	
@@ -169,7 +164,6 @@ bool Set::erase(int key)
 		if (parent && parent->right == tmp)
 			parent->right = tmp->left;
 		delete tmp;
-		--_size;
 		return true;
 	}
 
@@ -180,11 +174,6 @@ bool Set::erase(int key)
 	int replace_value = replace->key;
 	erase(replace_value);
 	tmp->key = replace_value;
-	--_size;
 	return true;
 }
 
-int Set::get_size() const
-{
-	return _size;
-}
