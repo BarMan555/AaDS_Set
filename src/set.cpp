@@ -1,5 +1,6 @@
 #include <iostream>
 #include <exception>
+#include <queue>
 #include <vector>
 #include "set.h"
 
@@ -177,3 +178,41 @@ bool Set::erase(int key)
 	return true;
 }
 
+Set SetSpace::intersection(const Set& first, const Set& second)
+{
+	if (!first.get_root() || !second.get_root()) return Set();
+	Set result;
+	Set copy_first(first);
+
+	std::queue<Node*> que; que.push(second.get_root());
+	while (!que.empty())
+	{
+		Node* current = que.front();
+		if (!copy_first.insert(current->key)) result.insert(current->key);
+		if (current->left) que.push(current->left);
+		if (current->right) que.push(current->right);
+		que.pop();
+	}
+
+	return result;
+}
+
+Set SetSpace::difference(const Set& first, const Set& second)
+{
+	if (!first.get_root()) return Set();
+	if (!second.get_root()) return Set(first);
+	Set result;
+	Set copy_second(second);
+
+	std::queue<Node*> que; que.push(first.get_root());
+	while (!que.empty())
+	{
+		Node* current = que.front();
+		if (copy_second.insert(current->key)) result.insert(current->key);
+		if (current->left) que.push(current->left);
+		if (current->right) que.push(current->right);
+		que.pop();
+	}
+
+	return result;
+}
