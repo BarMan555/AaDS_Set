@@ -59,8 +59,8 @@ Set::~Set()
 void Set::_print(const Node* root)
 {
 	if (!root) return;
-	std::cout << root->key << " ";
 	_print(root->left);
+	std::cout << root->key << " ";
 	_print(root->right);
 }
 
