@@ -17,9 +17,19 @@ if(MSVC)
     endif()
 endif()
 
+# Подключаем googletest
+include(FetchContent)
+FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/6b63c98ac43efc992122f1da12aaf0a0e0658206.zip)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
 # Объявляем библиотеки
 add_library(set_lib SHARED "include/set.h" "src/set.cpp")
 target_include_directories(set_lib PUBLIC "include")
+
+# Объявляем тесты
+add_executable(set_test "test/set_test.cpp")
+target_link_libraries(set_test tree GTest::gtest_main)
 
 # Объявляем консольное приложение
 add_executable(app "app/main.cpp")
