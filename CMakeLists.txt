@@ -29,7 +29,7 @@ target_include_directories(set_lib PUBLIC "include")
 
 # ќбъ€вл€ем тесты
 add_executable(set_test "test/set_test.cpp")
-target_link_libraries(set_test tree GTest::gtest_main)
+target_link_libraries(set_test set_lib GTest::gtest_main)
 
 # ќбъ€вл€ем консольное приложение
 add_executable(app "app/main.cpp")

@@ -14,6 +14,20 @@ Node::Node(int key) : Node()
 
 Set::Set() : _root(nullptr) {}
 
+Set::Set(std::initializer_list<int> list) : Set()
+{
+	for (int x : list)
+	{
+		insert(x);
+	}
+}
+
+Set::Set(const Set& other) : Set()
+{
+	if (!other.get_root()) return;
+	_root = copy_tree(other.get_root());
+}
+
 Node* Set::get_root() const
 {
 	return this->_root;
@@ -28,11 +42,6 @@ Node* Set::copy_tree(Node* root) {
 	return this->_root;
 }
 
-Set::Set(const Set& other) : Set()
-{
-	_root = copy_tree(other.get_root());
-}
-
 Set& Set::operator=(const Set& other)
 {
 	if(this != &other)
@@ -41,6 +50,23 @@ Set& Set::operator=(const Set& other)
 		_root = copy_tree(other.get_root());
 	}
 	return *this;
+}
+
+bool SetSpace::operator==(const Set& first, const Set& second)
+{
+	if (!first.get_root() && !second.get_root()) return true;
+
+	std::queue<Node*> que; que.push(second.get_root());
+	while (!que.empty())
+	{
+		Node* current = que.front();
+		if (!first.contains(current->key)) return false;
+		if (current->left) que.push(current->left);
+		if (current->right) que.push(current->right);
+		que.pop();
+	}
+
+	return true;
 }
 
 void Set::clear(Node* root)
@@ -105,7 +131,7 @@ bool Set::insert(int key)
 	return false;
 }
 
-bool Set::contains(int key)
+bool Set::contains(int key) const
 {
 	if (!_root) return false;
 	Node* tmp = _root;
@@ -125,57 +151,44 @@ bool Set::contains(int key)
 	return false;
 }
 
+bool Set::_erase(Node*& node, int key)
+{
+	if (!node) {
+		return false; // key нет в set
+	}
+	if (key < node->key) {
+		return _erase(node->left, key);
+	}
+	else if (key > node->key) {
+		return _erase(node->right, key);
+	}
+	else {
+		// start removing
+		if (!node->left) {
+			Node* tmp = node->right;
+			delete node;
+			node = tmp;
+			return true;
+		}
+		else if (!node->right) {
+			Node* tmp = node->left;
+			delete node;
+			node = tmp;
+			return true;
+		}
+		Node* min_right = node->right;
+		while (min_right->left) {
+			min_right = min_right->left;
+		}
+
+		node->key = min_right->key;
+		return _erase(node->right, min_right->key);
+	}
+}
+
 bool Set::erase(int key)
 {
-	Node* tmp = _root;
-	Node* parent = nullptr;
-	while (tmp && tmp->key != key)
-	{
-		parent = tmp;
-		if (tmp->key > key)
-		{
-			tmp = tmp->left;
-		}
-		else
-		{
-			tmp = tmp->right;
-		}
-	}
-
-	// не нашли ключ
-	if (!tmp)
-		return false;
-
-	// заменяем правым
-	if (tmp->left == nullptr)
-	{
-		if (parent && parent->left == tmp)
-			parent->left = tmp->right;
-		if (parent && parent->right == tmp)
-			parent->right = tmp->right;
-		delete tmp;
-		return true;
-	}
-	
-	// заменяем левым
-	if (tmp->right == nullptr)
-	{
-		if (parent && parent->left == tmp)
-			parent->left = tmp->left;
-		if (parent && parent->right == tmp)
-			parent->right = tmp->left;
-		delete tmp;
-		return true;
-	}
-
-	// 2 потомка
-	Node* replace = tmp->right;
-	while (replace->left)
-		replace = replace->left;
-	int replace_value = replace->key;
-	erase(replace_value);
-	tmp->key = replace_value;
-	return true;
+	return _erase(_root, key);
 }
 
 Set SetSpace::intersection(const Set& first, const Set& second)
