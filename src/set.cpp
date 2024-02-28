@@ -13,7 +13,6 @@ Node::Node(int key) : Node()
 }
 
 Set::Set() : _root(nullptr) {}
-
 Set::Set(std::initializer_list<int> list) : Set()
 {
 	for (int x : list)
@@ -21,7 +20,6 @@ Set::Set(std::initializer_list<int> list) : Set()
 		insert(x);
 	}
 }
-
 Set::Set(const Set& other) : Set()
 {
 	if (!other.get_root()) return;
@@ -76,7 +74,6 @@ void Set::clear(Node* root)
 	clear(root->right);
 	delete root;
 }
-
 Set::~Set()
 {
 	clear(_root);
@@ -90,7 +87,6 @@ void Set::_print(const Node* root)
 	std::cout << root->key << " ";
 	_print(root->right);
 }
-
 void Set::print()
 {
 	if (!_root) return;
@@ -151,7 +147,7 @@ bool Set::contains(int key) const
 	return false;
 }
 
-bool Set::_erase(Node*& node, int key)
+bool Set::_erase(Node*& node, const int key)
 {
 	if (!node) {
 		return false; // key нет в set
@@ -185,7 +181,6 @@ bool Set::_erase(Node*& node, int key)
 		return _erase(node->right, min_right->key);
 	}
 }
-
 bool Set::erase(int key)
 {
 	return _erase(_root, key);
@@ -209,7 +204,6 @@ Set SetSpace::intersection(const Set& first, const Set& second)
 
 	return result;
 }
-
 Set SetSpace::difference(const Set& first, const Set& second)
 {
 	if (!first.get_root()) return Set();

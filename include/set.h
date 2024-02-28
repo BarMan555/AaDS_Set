@@ -1,4 +1,5 @@
 #pragma once
+#include <initializer_list>
 	
 namespace SetSpace
 {
@@ -18,7 +19,7 @@ namespace SetSpace
 		Node* _root;
 		Node* copy_tree(Node* root);
 		void _print(const Node* root);
-		bool _erase(Node*& node, int key);
+		bool _erase(Node*& node, const int key);
 		void clear(Node* root);
 
 	public:
