@@ -1,6 +1,7 @@
 #include "set.h"
 #include <iostream>
 #include <chrono>
+#include <vector>
 
 
 size_t lcg() {
@@ -15,28 +16,31 @@ int main() {
 	using namespace SetSpace;
 	using namespace std;
 
-	/*Set set1000;
+	/*Set set;
 	int count = 100000;
+
+	vector<int> vec; vec.reserve(count);
 	
 	chrono::steady_clock::time_point _begin, _end;
 	double sum = 0;*/
 
-	/*for (int i = 0; i < 100; ++i)
-	{
-		begin = chrono::steady_clock::now();
-		for (int j = 0; j < count; ++j)
-		{
-			set1000.insert(lcg());
-		}
-		end = chrono::steady_clock::now();
-		sum += static_cast<double>(chrono::duration_cast<std::chrono::milliseconds>(end - begin).count());
-	}*/
+	/*for (int i = 0; i < 1000; ++i)
+	{*/
+		//begin = chrono::steady_clock::now();
+		//for (int j = 0; j < count; ++j)
+		//{
+		//	//set.insert(lcg());
+		//	vec.push_back(lcg());
+		//}
+		//end = chrono::steady_clock::now();
+		//sum += static_cast<double>(chrono::duration_cast<std::chrono::milliseconds>(end - begin).count());
+	//}
 
 	//for (int i = 0; i < 1000; ++i)
 	//{
 	//	_begin = chrono::steady_clock::now();
-	//	//std::find(begin(set1000), end(set1000), lcg());
-	//	set1000.contains(lcg());
+	//	//std::find(vec.begin(), vec.end(), lcg());
+	//	//set1000.contains(lcg());
 	//	_end = chrono::steady_clock::now();
 	//	sum += chrono::duration_cast<std::chrono::milliseconds>(_end - _begin).count();
 	//}
