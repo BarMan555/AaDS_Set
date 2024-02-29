@@ -63,6 +63,8 @@ int main() {
 		sum += chrono::duration_cast<std::chrono::milliseconds>(_end - _begin).count();
 	}
 
+	std::cout << "The time: " << sum / 1000 << " ms\n";
+
 	return 0;
 }
 
