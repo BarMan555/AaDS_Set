@@ -7,22 +7,21 @@
 using namespace SetSpace;
 
 Node::Node() : key(0), left(nullptr), right(nullptr){}
-Node::Node(int key) : Node()
+Node::Node(int key) : left(nullptr), right(nullptr)
 {
 	this->key = key;
 }
 
 Set::Set() : _root(nullptr) {}
-Set::Set(std::initializer_list<int> list) : Set()
+Set::Set(std::initializer_list<int> list) : _root(nullptr)
 {
 	for (int x : list)
 	{
 		insert(x);
 	}
 }
-Set::Set(const Set& other) : Set()
+Set::Set(const Set& other) : _root(nullptr)
 {
-	if (!other.get_root()) return;
 	_root = copy_tree(other.get_root());
 }
 
@@ -31,13 +30,19 @@ Node* Set::get_root() const
 	return this->_root;
 }
 
-Node* Set::copy_tree(Node* root) {
-	insert(root->key);
-	if (root->left)
-		copy_tree(root->left);
-	if (root->right)
-		copy_tree(root->right);
-	return this->_root;
+Node* Set::copy_tree(Node* root)
+{
+	if (root == nullptr) 
+	{
+		return nullptr;
+	}
+	else 
+	{
+		Node* new_node = new Node(root->key);
+		new_node->left = copy_tree(root->left);
+		new_node->right = copy_tree(root->right);
+		return new_node;
+	}
 }
 
 Set& Set::operator=(const Set& other)
@@ -52,7 +57,7 @@ Set& Set::operator=(const Set& other)
 
 bool SetSpace::operator==(const Set& first, const Set& second)
 {
-	if (!first.get_root() && !second.get_root()) return true;
+	if (first.get_root() == nullptr && second.get_root() == nullptr) return true;
 
 	std::queue<Node*> que; que.push(second.get_root());
 	while (!que.empty())
@@ -149,7 +154,7 @@ bool Set::contains(int key) const
 
 bool Set::_erase(Node*& node, const int key)
 {
-	if (!node) {
+	if (node == nullptr) {
 		return false; // key нет в set
 	}
 	if (key < node->key) {
@@ -160,13 +165,13 @@ bool Set::_erase(Node*& node, const int key)
 	}
 	else {
 		// start removing
-		if (!node->left) {
+		if (node->left == nullptr) {
 			Node* tmp = node->right;
 			delete node;
 			node = tmp;
 			return true;
 		}
-		else if (!node->right) {
+		else if (node->right == nullptr) {
 			Node* tmp = node->left;
 			delete node;
 			node = tmp;
