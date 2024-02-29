@@ -16,47 +16,52 @@ int main() {
 	using namespace SetSpace;
 	using namespace std;
 
-	/*Set set;
-	int count = 100000;
+	const int count = 100000;
 
+	Set set;
 	vector<int> vec; vec.reserve(count);
-	
+
 	chrono::steady_clock::time_point _begin, _end;
-	double sum = 0;*/
+	double sum = 0;
 
-	/*for (int i = 0; i < 1000; ++i)
-	{*/
-		//begin = chrono::steady_clock::now();
-		//for (int j = 0; j < count; ++j)
-		//{
-		//	//set.insert(lcg());
-		//	vec.push_back(lcg());
-		//}
-		//end = chrono::steady_clock::now();
-		//sum += static_cast<double>(chrono::duration_cast<std::chrono::milliseconds>(end - begin).count());
-	//}
+	// Время заполнения
+	for (int i = 0; i < 100; ++i)
+	{
+		_begin = chrono::steady_clock::now();
+		for (int j = 0; j < count; ++j)
+		{
+			set.insert(lcg());
+			//vec.push_back(lcg());
+		}
+		_end = chrono::steady_clock::now();
+		sum += static_cast<double>(chrono::duration_cast<std::chrono::milliseconds>(_end - _begin).count());
+	}		
 
-	//for (int i = 0; i < 1000; ++i)
-	//{
-	//	_begin = chrono::steady_clock::now();
-	//	//std::find(vec.begin(), vec.end(), lcg());
-	//	//set1000.contains(lcg());
-	//	_end = chrono::steady_clock::now();
-	//	sum += chrono::duration_cast<std::chrono::milliseconds>(_end - _begin).count();
-	//}
+	sum = 0;
+	// Время поиска
+	for (int i = 0; i < 1000; ++i)
+	{
+		_begin = chrono::steady_clock::now();
+		set.contains(lcg());
+		//std::find(vec.begin(), vec.end(), lcg());
+		_end = chrono::steady_clock::now();
+		sum += chrono::duration_cast<std::chrono::milliseconds>(_end - _begin).count();
+	}
 
-	//for (int i = 0; i < 1000; ++i)
-	//{
-	//	_begin = chrono::steady_clock::now();
-	//	/*	set1000.push_back(lcg());
-	//		set1000.erase(remove(set1000.begin(), set1000.end(), lcg()), set1000.end());*/
-	//	set1000.insert(lcg());
-	//	set1000.erase(lcg());
-	//	_end = chrono::steady_clock::now();
-	//	sum += chrono::duration_cast<std::chrono::milliseconds>(_end - _begin).count();
-	//}
-	//	
-	//std::cout << "The time: " << sum / 1000 << " ms\n";
+	sum = 0;
+	// Время добавления и удаления
+	for (int i = 0; i < 1000; ++i)
+	{
+		_begin = chrono::steady_clock::now();
+		set.insert(lcg());
+		set.erase(lcg());
+
+		/*vec.push_back(lcg());
+		auto it = std::remove(vec.begin(), vec.end(), lcg());
+		vec.erase(it, vec.end());*/
+		_end = chrono::steady_clock::now();
+		sum += chrono::duration_cast<std::chrono::milliseconds>(_end - _begin).count();
+	}
 
 	return 0;
 }
